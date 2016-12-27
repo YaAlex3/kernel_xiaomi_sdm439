@@ -47,6 +47,7 @@ enum kernfs_node_flag {
 	KERNFS_SUICIDAL		= 0x0400,
 	KERNFS_SUICIDED		= 0x0800,
 	KERNFS_EMPTY_DIR	= 0x1000,
+	KERNFS_HAS_RELEASE	= 0x2000,
 };
 
 /* @flags for kernfs_create_root() */
@@ -176,6 +177,7 @@ struct kernfs_open_file {
 	/* published fields */
 	struct kernfs_node	*kn;
 	struct file		*file;
+	struct seq_file		*seq_file;
 	void			*priv;
 
 	/* private fields, do not use outside kernfs proper */
@@ -187,10 +189,18 @@ struct kernfs_open_file {
 
 	size_t			atomic_write_len;
 	bool			mmapped;
+	bool			released:1;
 	const struct vm_operations_struct *vm_ops;
 };
 
 struct kernfs_ops {
+	/*
+	 * Optional open/release methods.  Both are called with
+	 * @of->seq_file populated.
+	 */
+	int (*open)(struct kernfs_open_file *of);
+	void (*release)(struct kernfs_open_file *of);
+
 	/*
 	 * Read is handled by either seq_file or raw_read().
 	 *
