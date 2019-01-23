@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Copyright (C) 2018 Sultan Alsawaf <sultan@kerneltoast.com>.
+ * Copyright (C) 2018-2019 Sultan Alsawaf <sultan@kerneltoast.com>.
  */
 
 #define pr_fmt(fmt) "cpu_input_boost: " fmt
@@ -242,8 +242,8 @@ static void input_boost_worker(struct work_struct *work)
 
 static void input_unboost_worker(struct work_struct *work)
 {
-	struct boost_drv *b =
-		container_of(to_delayed_work(work), typeof(*b), input_unboost);
+	struct boost_drv *b = container_of(to_delayed_work(work),
+					   typeof(*b), input_unboost);
 	u32 state = get_boost_state(b);
 
 	clear_boost_bit(b, INPUT_BOOST);
@@ -271,8 +271,8 @@ static void max_boost_worker(struct work_struct *work)
 
 static void max_unboost_worker(struct work_struct *work)
 {
-	struct boost_drv *b =
-		container_of(to_delayed_work(work), typeof(*b), max_unboost);
+	struct boost_drv *b = container_of(to_delayed_work(work),
+					   typeof(*b), max_unboost);
 	u32 state = get_boost_state(b);
 
 	clear_boost_bit(b, MAX_BOOST);
@@ -300,8 +300,8 @@ static void general_boost_worker(struct work_struct *work)
 
 static void general_unboost_worker(struct work_struct *work)
 {
-	struct boost_drv *b =
-		container_of(to_delayed_work(work), typeof(*b), general_unboost);
+	struct boost_drv *b = container_of(to_delayed_work(work),
+					   typeof(*b), general_unboost);
 	u32 state = get_boost_state(b);
 
 	clear_boost_bit(b, GENERAL_BOOST);
@@ -505,7 +505,6 @@ static int __init cpu_input_boost_init(void)
 		goto unregister_handler;
 	}
 
-	/* Allow global boost config access for external boosts */
 	boost_drv_g = b;
 
 	return 0;
