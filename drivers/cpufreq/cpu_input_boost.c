@@ -10,6 +10,7 @@
 #include <linux/fb.h>
 #include <linux/input.h>
 #include <linux/moduleparam.h>
+#include <linux/msm_drm_notify.h>
 #include <linux/slab.h>
 
 unsigned long last_input_time;
@@ -235,10 +236,10 @@ static void input_boost_worker(struct work_struct *work)
 	}
 
 	queue_delayed_work(b->wq, &b->input_unboost,
-		msecs_to_jiffies(input_boost_duration));
+			   msecs_to_jiffies(input_boost_duration));
 
-	set_stune_boost(b, state, INPUT_STUNE_BOOST, input_stune_boost,
-		&b->input_stune_slot);
+	update_stune_boost(b, state, INPUT_STUNE_BOOST, input_stune_boost,
+			   &b->input_stune_slot);
 }
 
 static void input_unboost_worker(struct work_struct *work)
@@ -264,10 +265,10 @@ static void max_boost_worker(struct work_struct *work)
 	}
 
 	queue_delayed_work(b->wq, &b->max_unboost,
-		msecs_to_jiffies(atomic_read(&b->max_boost_dur)));
+			   msecs_to_jiffies(atomic_read(&b->max_boost_dur)));
 
-	set_stune_boost(b, state, MAX_STUNE_BOOST, max_stune_boost,
-		&b->max_stune_slot);
+	update_stune_boost(b, state, MAX_STUNE_BOOST, max_stune_boost,
+			   &b->max_stune_slot);
 }
 
 static void max_unboost_worker(struct work_struct *work)
