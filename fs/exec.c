@@ -90,7 +90,7 @@ bool is_lmkd_pid(pid_t pid)
 	return atomic_read(&lmkd_pid) == pid;
 }
 
-bool comm_should_block_write(char *comm)
+bool is_boost_comm(char *comm)
 {
 	return !memcmp(current->comm, "init", sizeof("init")) ||
 	       !memcmp(current->comm, "NodeLooperThrea", sizeof("NodeLooperThrea")) ||
