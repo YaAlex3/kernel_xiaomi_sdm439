@@ -5,7 +5,7 @@
 #define pr_fmt(fmt) "devfreq_boost: " fmt
 
 #include <linux/devfreq_boost.h>
-#include <linux/msm_drm_notify.h>
+#include <linux/fb.h>
 #include <linux/input.h>
 #include <linux/slab.h>
 
@@ -246,7 +246,7 @@ static void devfreq_max_unboost(struct work_struct *work)
 }
 
 static int fb_notifier_cb(struct notifier_block *nb,
-	unsigned long action, void *data)
+			       unsigned long action, void *data)
 {
 	struct df_boost_drv *d = container_of(nb, typeof(*d), fb_notif);
 	struct fb_event *evdata = data;
@@ -254,7 +254,7 @@ static int fb_notifier_cb(struct notifier_block *nb,
 	bool screen_awake;
 
 	/* Parse framebuffer blank events as soon as they occur */
-	if (action != FB_EARLY_EVENT_BLANK)
+	if (action != FB_BLANK_UNBLANK)
 		return NOTIFY_OK;
 
 	/* Boost when the screen turns on and unboost when it turns off */
