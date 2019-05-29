@@ -4114,7 +4114,7 @@ pick_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *curr)
 				second = curr;
 		}
 
-		if (second && (strict_skip ||
+		if (second && (sched_feat(STRICT_SKIP_BUDDY) ||
 		    wakeup_preempt_entity(second, left) < 1))
 			se = second;
 	}
