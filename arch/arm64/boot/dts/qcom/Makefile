@@ -608,22 +608,21 @@ dtb-$(CONFIG_ARCH_SDM632) += sdm632-rumi.dtb \
 	sdm632-pm8004-qrd-sku4.dtb \
 	sdm632-pm8004-qrd.dtb
 
-dtb-$(CONFIG_ARCH_SDM439) += sdm439-mtp.dtb \
-	sdm439-cdp.dtb \
-	sdm439-qrd.dtb \
-	sda439-mtp.dtb \
-	sda439-cdp.dtb \
-	sdm439-external-codec-mtp.dtb \
-	sdm439-rcm.dtb \
-	qm215-qrd.dtb \
-	qm215-qrd-smb1360.dtb
+dtb-$(CONFIG_ARCH_SDM439) += pine.dtb \
+	pine2.dtb \
+	pine3.dtb \
+	pine4.dtb \
+	pine5.dtb \
+	pine6.dtb \
+	pine7.dtb \
+	pine8.dtb \
+	pine9.dtb
 
 dtb-$(CONFIG_ARCH_SDM429) += sdm429-mtp.dtb \
 	sdm429-cdp.dtb \
 	sdm429-qrd.dtb \
 	sda429-mtp.dtb \
 	sda429-cdp.dtb
-
 endif
 
 always		:= $(dtb-y)
