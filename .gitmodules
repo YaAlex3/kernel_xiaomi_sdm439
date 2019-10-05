@@ -1,0 +1,3 @@
+[submodule "AnyKernel"]
+	path = AnyKernel
+	url = https://github.com/YaAlex3/AnyKernel3
