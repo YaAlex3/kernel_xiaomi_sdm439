@@ -1,3 +1,7 @@
+dtb-$(CONFIG_ARCH_QCOM)	+= apq8016-sbc.dtb msm8916-mtp.dtb
+dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
+dtb-$(CONFIG_ARCH_QCOM)	+= apq8096-db820c.dtb
+
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
 	dtbo-$(CONFIG_ARCH_SDM845) += \
 		sdm845-cdp-overlay.dtbo \
@@ -344,8 +348,7 @@ dtbo-$(CONFIG_ARCH_MSM8917) += msm8917-mtp-overlay.dtbo \
 	apq8017-cdp-overlay.dtbo \
 	apq8017-cdp-wcd-rome-overlay.dtbo
 
-dtbo-$(CONFIG_ARCH_QM215) +=qm215-qrd-overlay.dtbo \
-	qcm2150-qrd-overlay.dtbo
+dtbo-$(CONFIG_ARCH_QM215) +=qm215-qrd-overlay.dtbo
 dtbo-$(CONFIG_ARCH_QM215) +=qm215-qrd-smb1360-overlay.dtbo
 
 dtbo-$(CONFIG_ARCH_MSM8953) += msm8953-mtp-overlay.dtbo \
@@ -423,7 +426,6 @@ apq8017-cdp-wcd-rome-overlay.dtbo-base := apq8017-pmi8950.dtb \
 	apq8017-pmi8937.dtb
 
 qm215-qrd-overlay.dtbo-base := qm215.dtb
-qcm2150-qrd-overlay.dtbo-base := qcm2150.dtb
 qm215-qrd-smb1360-overlay.dtbo-base := qm215.dtb
 
 msm8953-mtp-overlay.dtbo-base := sdm450.dtb \
@@ -562,8 +564,7 @@ dtb-$(CONFIG_ARCH_MSM8917) += msm8917-pmi8950-mtp.dtb \
 	msm8917-pmi8940-cdp.dtb \
 	msm8917-pmi8940-rcm.dtb
 
-dtb-$(CONFIG_ARCH_QM215) += qm215-qrd.dtb \
-	qcm2150-qrd.dtb
+dtb-$(CONFIG_ARCH_QM215) += qm215-qrd.dtb
 dtb-$(CONFIG_ARCH_QM215) += qm215-qrd-smb1360.dtb
 
 dtb-$(CONFIG_ARCH_MSM8909) += sdw3100-msm8909w-wtp.dtb \
@@ -611,21 +612,22 @@ dtb-$(CONFIG_ARCH_SDM632) += sdm632-rumi.dtb \
 	sdm632-pm8004-qrd-sku4.dtb \
 	sdm632-pm8004-qrd.dtb
 
-dtb-$(CONFIG_ARCH_SDM439) += pine.dtb \
-	pine2.dtb \
-	pine3.dtb \
-	pine4.dtb \
-	pine5.dtb \
-	pine6.dtb \
-	pine7.dtb \
-	pine8.dtb \
-	pine9.dtb
+dtb-$(CONFIG_ARCH_SDM439) += sdm439-mtp.dtb \
+	sdm439-cdp.dtb \
+	sdm439-qrd.dtb \
+	sda439-mtp.dtb \
+	sda439-cdp.dtb \
+	sdm439-external-codec-mtp.dtb \
+	sdm439-rcm.dtb \
+	qm215-qrd.dtb \
+	qm215-qrd-smb1360.dtb
 
 dtb-$(CONFIG_ARCH_SDM429) += sdm429-mtp.dtb \
 	sdm429-cdp.dtb \
 	sdm429-qrd.dtb \
 	sda429-mtp.dtb \
 	sda429-cdp.dtb
+
 endif
 
 always		:= $(dtb-y)

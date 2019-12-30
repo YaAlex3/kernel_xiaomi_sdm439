@@ -84,10 +84,6 @@
 	status = "disabled";
 };
 
-&sde_dp {
-	qcom,max-pclk-frequency-khz = <675000>;
-};
-
 &mem_dump {
 	rpmh {
 		qcom,dump-size = <0x400000>;
