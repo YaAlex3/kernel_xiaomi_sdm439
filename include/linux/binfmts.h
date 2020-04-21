@@ -123,7 +123,6 @@ extern void install_exec_creds(struct linux_binprm *bprm);
 extern void set_binfmt(struct linux_binfmt *new);
 extern ssize_t read_code(struct file *, unsigned long, loff_t, size_t);
 extern bool is_zygote_pid(pid_t pid);
-extern bool is_lmkd_pid(pid_t pid);
 
 static inline bool task_is_booster(struct task_struct *tsk)
 {
@@ -131,7 +130,7 @@ static inline bool task_is_booster(struct task_struct *tsk)
 
 	get_task_comm(comm, tsk);
 	return !strcmp(comm, "init") || !strcmp(comm, "NodeLooperThrea") ||
-	       !strcmp(comm, "power@1.3-servi");
+	       !strcmp(comm, "power@1.0-servi");
 }
 
 #endif /* _LINUX_BINFMTS_H */
