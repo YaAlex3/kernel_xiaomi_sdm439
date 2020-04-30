@@ -136,12 +136,16 @@ struct fts_ts_data {
 	struct fts_ts_platform_data *pdata;
 	struct ts_ic_info ic_info;
 	struct workqueue_struct *ts_workqueue;
+	struct work_struct fwupg_work;
+	struct delayed_work esdcheck_work;
+	struct delayed_work prc_work;
 	struct regulator *vdd;
 	struct regulator *vcc_i2c;
 	spinlock_t irq_lock;
 	struct mutex report_mutex;
 	int irq;
 	bool suspended;
+	bool fw_loading;
 	bool irq_disabled;
 	bool power_disabled;
 	/* multi-touch */
@@ -152,6 +156,8 @@ struct fts_ts_data {
 	bool key_down;
 	int touch_point;
 	int point_num;
+	struct proc_dir_entry *proc;
+	u8 proc_opmode;
 #if FTS_PINCTRL_EN
 	struct pinctrl *pinctrl;
 	struct pinctrl_state *pins_active;
@@ -179,7 +185,78 @@ void fts_i2c_hid2std(struct i2c_client *client);
 int fts_i2c_init(void);
 int fts_i2c_exit(void);
 
+/* Gesture functions */
+#if FTS_GESTURE_EN
+int fts_gesture_init(struct fts_ts_data *ts_data);
+int fts_gesture_exit(struct i2c_client *client);
+void fts_gesture_recovery(struct i2c_client *client);
+int fts_gesture_readdata(struct fts_ts_data *ts_data);
+int fts_gesture_suspend(struct i2c_client *i2c_client);
+int fts_gesture_resume(struct i2c_client *client);
+#endif
+
+/* Apk and functions */
+#if FTS_APK_NODE_EN
+int fts_create_apk_debug_channel(struct fts_ts_data *);
+void fts_release_apk_debug_channel(struct fts_ts_data *);
+#endif
+
+/* ADB functions */
+#if FTS_SYSFS_NODE_EN
+int fts_create_sysfs(struct i2c_client *client);
+int fts_remove_sysfs(struct i2c_client *client);
+#endif
+
+/* ESD */
+#if FTS_ESDCHECK_EN
+int fts_esdcheck_init(struct fts_ts_data *ts_data);
+int fts_esdcheck_exit(struct fts_ts_data *ts_data);
+int fts_esdcheck_switch(bool enable);
+int fts_esdcheck_proc_busy(bool proc_debug);
+int fts_esdcheck_set_intr(bool intr);
+int fts_esdcheck_suspend(void);
+int fts_esdcheck_resume(void);
+#endif
+
+/* Production test */
+#if FTS_TEST_EN
+int fts_test_init(struct i2c_client *client);
+int fts_test_exit(struct i2c_client *client);
+#endif
+
+/* Point Report Check*/
+#if FTS_POINT_REPORT_CHECK_EN
+int fts_point_report_check_init(struct fts_ts_data *ts_data);
+int fts_point_report_check_exit(struct fts_ts_data *ts_data);
+void fts_prc_queue_work(struct fts_ts_data *ts_data);
+#endif
+
+/* FW upgrade */
+int fts_upgrade_bin(struct i2c_client *client, char *fw_name, bool force);
+int fts_fwupg_init(struct fts_ts_data *ts_data);
+int fts_fwupg_exit(struct fts_ts_data *ts_data);
+
+/* Other */
+int fts_reset_proc(int hdelayms);
+int fts_wait_tp_to_valid(struct i2c_client *client);
+void fts_tp_state_recovery(struct i2c_client *client);
+int fts_ex_mode_init(struct i2c_client *client);
+int fts_ex_mode_exit(struct i2c_client *client);
+int fts_ex_mode_recovery(struct i2c_client *client);
+int fts_get_ic_information(struct fts_ts_data *ts_data);
+int fts_tp_selftest_proc(void);
+
 void fts_irq_disable(void);
 void fts_irq_enable(void);
+
+/*Add by HQ-102007757 for ctp lockdown info*/
+#if HQ_LOCK_DOWN_INFO
+int fts_create_lockdown_proc(struct i2c_client *client);
+#endif
+
+/*Add by HQ-102007757 for sending tp hw info*/
+#if HQ_CTP_HWINFO_REGISTER
+int ctp_hw_info(struct fts_ts_data *ts_data, struct i2c_client *client);
+#endif
 
 #endif /* __LINUX_FOCALTECH_CORE_H__ */
