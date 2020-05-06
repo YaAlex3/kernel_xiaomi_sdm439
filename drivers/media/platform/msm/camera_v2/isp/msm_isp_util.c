@@ -30,6 +30,9 @@
 static DEFINE_MUTEX(bandwidth_mgr_mutex);
 static struct msm_isp_bandwidth_mgr isp_bandwidth_mgr;
 
+bool miui_ts;
+core_param(miui_ts, miui_ts, bool, 0644);
+
 #define MSM_ISP_DUAL_VFE_MUTEX_LOCK(vfe_dev) { \
 	if (vfe_dev->is_split && vfe_dev->pdev->id == ISP_VFE0) { \
 		struct vfe_device *vfe1_dev = vfe_dev->common_data-> \
@@ -212,7 +215,11 @@ void msm_isp_get_timestamp(struct msm_isp_timestamp *time_stamp,
 		time_stamp->buf_time.tv_sec    = time_stamp->vt_time.tv_sec;
 		time_stamp->buf_time.tv_usec   = time_stamp->vt_time.tv_usec;
 	} else {
-		ktime_get_ts(&ts);
+		if(!miui_ts) {
+			ktime_get_ts(&ts);
+		} else {
+			get_monotonic_boottime(&ts);
+		}
 		time_stamp->buf_time.tv_sec    = ts.tv_sec;
 		time_stamp->buf_time.tv_usec   = ts.tv_nsec/1000;
 	}

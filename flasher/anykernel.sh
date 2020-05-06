@@ -33,15 +33,13 @@ ui_print "          |       • Beginning...       |          ";
 ui_print "          |       • Unpacking...       |          ";
 split_boot;
 ui_print "          |       • Magic...           |          ";
-#
-# Replace qcom.post_boot
-#
-mountpoint -q /data && {
-  # Install custom fstab
-  mkdir -p /data/adb/magisk_simple/vendor/etc;
-  cp $TMPDIR/gm/fstab.qcom /data/adb/magisk_simple/vendor/etc;
-  chmod 644 /data/adb/magisk_simple/vendor/etc/fstab.qcom; }
-
+/tmp/anykernel/tools/busybox mount -o ro -t auto /system_root;
+if [ "`/tmp/anykernel/tools/busybox grep -i ro.miui /system_root/system/build.prop`" ];
+then
+  patch_cmdline "lpm_levels.sleep_disabled=1" "msm_vft.miui.ts=true";
+else
+  patch_cmdline "lpm_levels.sleep_disabled" "";
+fi
 ui_print "          |       • Finishing...       |          ";
 ui_print "          |____________________________|          ";
 flash_boot;
